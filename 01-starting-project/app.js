@@ -29,12 +29,20 @@ app.get('/', (req, res) => {
 
         <main>
           <p>HTMX is a JavaScript library that you use without writing JavaScript code.</p>
-          <button>Learn More</button>
+          <button hx-get="/info">Learn More</button>
         </main>
       </body>
     </html>
   `);
 });
+
+  app.get('/info', (req, res) => {
+    res.send(`
+      <ul>
+        ${HTMX_KNOWLEDGE.map(info => `<li>${info}</li>`)}
+      </ul>
+    `);
+  });
 
   app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
