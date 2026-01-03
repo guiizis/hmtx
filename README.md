@@ -1,1 +1,1 @@
-# angular-security-course
+# htmx course from maximilian
