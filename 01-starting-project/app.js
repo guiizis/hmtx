@@ -32,6 +32,7 @@ app.get('/', (req, res) => {
           <button 
             hx-get="/info"
             hx-target="main"
+            hx-trigger="mouseenter[ctrlKey],click"
             hx-swap="beforeend"
           >
             Learn More
