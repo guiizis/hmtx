@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
           
         />
         <link rel="icon" href="/icon.png" />
+        <script src="/htmx.js" defer></script>
         <link rel="stylesheet" href="/main.css" />
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" defer ></script>
       </head>
       <body>
         <header id="main-header">
@@ -29,28 +29,22 @@ app.get('/', (req, res) => {
 
         <main>
           <p>HTMX is a JavaScript library that you use without writing JavaScript code.</p>
-          <button 
-            hx-get="/info"
-            hx-target="main"
-            hx-trigger="mouseenter[ctrlKey],click"
-            hx-swap="beforeend"
-          >
-            Learn More
-          </button>
+          <form hx-post="/note">
+            <p>
+              <label for="note">Your note</label>
+              <input type="text" id="note" name="note">
+            </p>
+            <p>
+              <button>Save Note</button>
+            </p>
+          </form>
+          <ul>
+            ${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
+          </ul>
         </main>
       </body>
     </html>
   `);
 });
 
-app.get('/info', (req, res) => {
-  res.send(`
-      <ul>
-        ${HTMX_KNOWLEDGE.map(info => `<li>${info}</li>`).join('')}
-      </ul>
-    `);
-});
-
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-});
+app.listen(3000);
