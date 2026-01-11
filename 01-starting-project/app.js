@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
             (goal, index) => `
             <li id="goal-${index}">
               <span>${goal}</span>
-              <button>Remove</button>
+              <button hx-delete="/goals/${index}" hx-target="#goal-${index}" hx-swap="outerHTML">Remove</button>
             </li>
           `
           ).join('')}
@@ -59,9 +59,15 @@ app.post('/goals', (req, res) => {
   res.send(`
     <li id="goal-${courseGoals.length - 1}">
       <span>${goalText}</span>
-      <button>Remove</button>
+      <button hx-delete="/goals/${courseGoals.length - 1}" hx-target="#goal-${courseGoals.length - 1}" hx-swap="outerHTML">Remove</button>
     </li>
   `);
+});
+
+app.delete('/goals/:index', (req, res) => {
+  const goalIndex = parseInt(req.params.index);
+  courseGoals.splice(goalIndex, 1);
+  res.send('');
 });
 
 app.listen(3000);
