@@ -37,10 +37,10 @@ app.get('/', (req, res) => {
         <section>
           <ul id="goals">
           ${courseGoals.map(
-            (goal, index) => `
-            <li id="goal-${index}">
-              <span>${goal}</span>
-              <button hx-delete="/goals/${index}" hx-target="#goal-${index}" hx-swap="outerHTML">Remove</button>
+            (goal, _) => `
+            <li id="goal-${goal.id}">
+              <span>${goal.text}</span>
+              <button hx-delete="/goals/${goal.id}" hx-target="#goal-${goal.id}" hx-swap="outerHTML">Remove</button>
             </li>
           `
           ).join('')}
@@ -54,19 +54,21 @@ app.get('/', (req, res) => {
 
 app.post('/goals', (req, res) => {
   const goalText = req.body.goal;
-  courseGoals.push(goalText);
+  const goalId = new Date().getTime().toString();
+  courseGoals.push({text: goalText, id: goalId});
   // res.redirect('/');
   res.send(`
-    <li id="goal-${courseGoals.length - 1}">
+    <li id="goal-${goalId}">
       <span>${goalText}</span>
-      <button hx-delete="/goals/${courseGoals.length - 1}" hx-target="#goal-${courseGoals.length - 1}" hx-swap="outerHTML">Remove</button>
+      <button hx-delete="/goals/${goalId}" hx-target="#goal-${goalId}" hx-swap="outerHTML">Remove</button>
     </li>
   `);
 });
 
-app.delete('/goals/:index', (req, res) => {
-  const goalIndex = parseInt(req.params.index);
-  courseGoals.splice(goalIndex, 1);
+app.delete('/goals/:id', (req, res) => {
+  const goalId = parseInt(req.params.id);
+  const index = courseGoals.findIndex(goal => goal.id === goalId);
+  courseGoals.splice(index, 1);
   res.send('');
 });
 
